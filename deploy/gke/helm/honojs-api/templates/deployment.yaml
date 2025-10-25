@@ -22,28 +22,26 @@ spec:
           imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
           ports:
             - containerPort: {{ .containerPort | default 8080 }}
-{{- if .env }}
+          {{- if .env }}
           env:
-{{- range .env }}
+          {{- range .env }}
             - name: {{ .name }}
-{{- if hasKey . "value" }}
+              {{- if hasKey . "value" }}
               value: {{ .value | quote }}
-{{- else if hasKey . "valueFrom" }}
+              {{- else if hasKey . "valueFrom" }}
               valueFrom:
-                secretKeyRef:
-                  name: {{ .valueFrom.secretKeyRef.name }}
-                  key: {{ .valueFrom.secretKeyRef.key }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- if .envFrom }}
+{{ toYaml .valueFrom | indent 16 }}
+              {{- end }}
+          {{- end }}
+          {{- end }}
+          {{- if .envFrom }}
           envFrom:
 {{ toYaml .envFrom | indent 12 }}
-{{- end }}
-{{- if .resources }}
+          {{- end }}
+          {{- if .resources }}
           resources:
 {{ toYaml .resources | indent 12 }}
-{{- else }}
+          {{- else }}
           resources:
             requests:
               cpu: 100m
@@ -51,20 +49,19 @@ spec:
             limits:
               cpu: 200m
               memory: 256Mi
-{{- end }}
-{{- if .healthPath }}
+          {{- end }}
+          {{- if .healthPath }}
           livenessProbe:
             httpGet:
               path: {{ .healthPath }}
               port: {{ .containerPort | default 8080 }}
             initialDelaySeconds: 30
             periodSeconds: 10
-{{- end }}
+          {{- end }}
           readinessProbe:
             httpGet:
               path: {{ .readinessPath | default .healthPath | default "/healthz" }}
               port: {{ .containerPort | default 8080 }}
             initialDelaySeconds: 5
             periodSeconds: 5
-{{- end }}
 {{- end }}
