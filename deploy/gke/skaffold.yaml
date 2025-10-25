@@ -1,24 +1,24 @@
 apiVersion: skaffold/v4beta6
 kind: Config
 build:
-  googleCloudBuild:
-    logging: CLOUD_LOGGING_ONLY
-  tagPolicy:
-    inputDigest: {}
+  # googleCloudBuild:
+  #   logging: CLOUD_LOGGING_ONLY
+  # tagPolicy:
+  #   inputDigest: {}
   artifacts:
-    - image: gateway
+    - image: jitendrapalei/gateway:latest
       context: ../..
       docker:
         dockerfile: apps/gateway/Dockerfile
-    - image: control-plane
+    - image: jitendrapalei/control-plane-service:latest
       context: ../..
       docker:
         dockerfile: apps/control-plane/Dockerfile
-    - image: event-collector
+    - image: jitendrapalei/event-collector-service:latest
       context: ../..
       docker:
         dockerfile: apps/event-collector/Dockerfile
-    - image: worker
+    - image: jitendrapalei/worker:latest
       context: ../..
       docker:
         dockerfile: apps/worker/Dockerfile
