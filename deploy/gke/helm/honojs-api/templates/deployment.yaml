@@ -19,7 +19,7 @@ spec:
       containers:
         - name: {{ .name }}
           image: {{ .image | default .name }}
-          imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .containerPort | default 8080 }}
           {{- if .env }}
@@ -34,14 +34,6 @@ spec:
               {{- end }}
           {{- end }}
           {{- end }}
-          {{- if .envFrom }}
-          envFrom:
-{{ toYaml .envFrom | indent 12 }}
-          {{- end }}
-          {{- if .resources }}
-          resources:
-{{ toYaml .resources | indent 12 }}
-          {{- else }}
           resources:
             requests:
               cpu: 100m
@@ -49,7 +41,6 @@ spec:
             limits:
               cpu: 200m
               memory: 256Mi
-          {{- end }}
           {{- if .healthPath }}
           livenessProbe:
             httpGet:
@@ -57,11 +48,11 @@ spec:
               port: {{ .containerPort | default 8080 }}
             initialDelaySeconds: 30
             periodSeconds: 10
-          {{- end }}
           readinessProbe:
             httpGet:
               path: {{ .readinessPath | default .healthPath | default "/healthz" }}
               port: {{ .containerPort | default 8080 }}
             initialDelaySeconds: 5
             periodSeconds: 5
+          {{- end }}
 {{- end }}
