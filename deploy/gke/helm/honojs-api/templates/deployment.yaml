@@ -30,7 +30,9 @@ spec:
               value: {{ .value | quote }}
 {{- else if hasKey . "valueFrom" }}
               valueFrom:
-{{ toYaml .valueFrom | indent 14 }}
+                secretKeyRef:
+                  name: {{ .valueFrom.secretKeyRef.name }}
+                  key: {{ .valueFrom.secretKeyRef.key }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -64,4 +66,5 @@ spec:
               port: {{ .containerPort | default 8080 }}
             initialDelaySeconds: 5
             periodSeconds: 5
+{{- end }}
 {{- end }}
