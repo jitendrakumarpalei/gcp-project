@@ -33,10 +33,10 @@ spec:
 
             echo "Running control-plane migrations..."
             # Run Knex CLI via node (no tsx required)
-            node ./node_modules/knex/bin/cli.js --knexfile apps/control-plane/knexfile.ts migrate:latest
+            node ./node_modules/knex/bin/cli.js --knexfile ./apps/control-plane/knexfile.ts migrate:latest
 
             echo "Running ledger migrations..."
-            node ./node_modules/knex/bin/cli.js --knexfile apps/ledger/knexfile.ts migrate:latest
+            node ./node_modules/knex/bin/cli.js --knexfile ./apps/ledger/knexfile.ts migrate:latest
 
             echo "Migrations completed successfully!"
         env:
