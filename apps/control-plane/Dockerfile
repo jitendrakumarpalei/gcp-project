@@ -4,6 +4,7 @@ WORKDIR /workspace
 
 RUN apk add --no-cache python3 make g++
 RUN npm install -g npm@10.9.2
+RUN npm install -g tsx 
 
 # Copy package files for all workspaces first
 COPY package*.json tsconfig.base.json ./
@@ -22,6 +23,7 @@ FROM node:20-alpine
 
 RUN apk add --no-cache libc6-compat
 RUN npm install -g npm@10.9.2
+RUN npm install -g tsx 
 
 WORKDIR /app
 ENV NODE_ENV=production
