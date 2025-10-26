@@ -31,12 +31,13 @@ spec:
             set -e
             echo "Running database migrations..."
 
+            # Run control-plane migrations (includes signed_url_replays, api_clients, etc)
             echo "Running control-plane migrations..."
-            # Run Knex CLI via node (no tsx required)
-            node ./node_modules/knex/bin/cli.js --knexfile ./apps/control-plane/knexfile.ts migrate:latest
+            npm run migrate:control-plane
 
+            # Run ledger migrations (includes classification_jobs, ledger_events, etc)
             echo "Running ledger migrations..."
-            node ./node_modules/knex/bin/cli.js --knexfile ./apps/ledger/knexfile.ts migrate:latest
+            npm run migrate:ledger
 
             echo "Migrations completed successfully!"
         env:
